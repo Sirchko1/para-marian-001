@@ -1,75 +1,105 @@
-let pasoActual = 0;
-let erroresTotales = 0;
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocolo de Acceso - Sistema Interno</title>
+    <style>
+        body { background-color: #0d0d0d; color: #00ff41; font-family: 'Courier New', Courier, monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; text-align: center; }
+        #log-container { width: 100%; max-width: 500px; height: 150px; overflow-y: auto; background: #1a1a1a; padding: 15px; border-radius: 5px; border: 1px solid #333; margin-bottom: 30px; text-align: left; font-size: 0.8rem; color: #ff4d4d; scroll-behavior: smooth; }
+        .card { background: #fff; color: #333; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-width: 400px; width: 100%; }
+        input { width: 80%; padding: 12px; margin: 15px 0; border: 2px solid #ddd; border-radius: 8px; text-align: center; font-size: 1rem; }
+        button { background: #007bff; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: 0.3s; }
+        button:hover { background: #0056b3; transform: scale(1.05); }
+        .pista-text { color: #856404; background-color: #fff3cd; border: 1px solid #ffeeba; padding: 10px; border-radius: 5px; margin-top: 10px; font-size: 0.9rem; display: none; }
+    </style>
+</head>
+<body>
 
-// Definición de niveles con validación estricta y pistas
-const pasos = [
-    {
-        titulo: "Nivel 1: El Inicio",
-        instruccion: "Adivinaste la respuesta? son 3 dígitos",
-        respuesta: "006", // Asegúrate de que coincida con tu respuesta
-        pista: "Pista: Respondías igual cuando te ponía encuestas en whats",
-        logExito: "> LOG: Acceso nivel 1 concedido. Si recuerdas como iniciamos, amé cada letra que nos escribiamos, como disfrutabas mis historias de los sueños que tuve contigo",
-        logError: "> ERROR: Respuesta incorrecta. Ya mataste una vida de nuestro amor u-u "
-    },
-    {
-        titulo: "Nivel 2: La Paciencia",
-        instruccion: "Escribe la fecha en que decidimos intentar esto (DD/MM/AAAA):",
-        respuesta: "15/12/2025",
-        pista: "Pista: Sucedió a mediados de diciembre.",
-        logExito: "> LOG: Nivel 2 superado. Procesando esfuerzo del usuario...",
-        logError: "> ERROR: Datos erróneos. La frustración del sistema aumenta."
-    },
-    {
-        titulo: "Nivel 3: El Sacrificio",
-        instruccion: "¿Qué es lo que más elijo proteger cuando me callo lo que siento?",
-        respuesta: "nosotros",
-        pista: "Pista: Empieza con 'N' y somos tú y yo.",
-        logExito: "> LOG: Nivel final desbloqueado. Preparando mensaje de honestidad.",
-        logError: "> ERROR: Fallo crítico. Parece que no hay interés en descifrar el sistema."
-    }
-];
+    <div id="log-container">
+        > SYSTEM BOOT: Iniciando diagnóstico emocional...<br>
+        > ADVERTENCIA: Nivel de frustración detectado al 85%.<br>
+        > PRIORIDAD: Mantener protocolo de amabilidad activo.
+    </div>
 
-function verificarRespuesta() {
-    const input = document.getElementById('respuesta');
-    const userRes = input.value.toLowerCase().trim();
-    const logBox = document.getElementById('log-container');
-    const instruccionTxt = document.getElementById('instruccion');
-    
-    // VALIDACIÓN ESTRICTA
-    if (userRes === pasos[pasoActual].respuesta.toLowerCase()) {
-        // ACIERTO: Avanza de nivel
-        logBox.innerHTML += `<br><span style="color: #00ff41;">${pasos[pasoActual].logExito}</span>`;
-        pasoActual++;
-        
-        if (pasoActual < pasos.length) {
-            document.getElementById('titulo').innerText = pasos[pasoActual].titulo;
-            instruccionTxt.innerText = pasos[pasoActual].instruccion;
-            input.value = "";
-        } else {
-            mostrarFinal();
+    <div id="game-container" class="card">
+        <h3 id="titulo">Nivel 1: El Inicio</h3>
+        <p id="instruccion">¿Adivinaste la respuesta? son 3 dígitos</p>
+        <input type="text" id="respuesta" placeholder="Escribe aquí...">
+        <div id="pista-box" class="pista-text"></div>
+        <br>
+        <button onclick="verificarRespuesta()">Desbloquear</button>
+    </div>
+
+    <script>
+        let pasoActual = 0;
+        let erroresTotales = 0;
+
+        const pasos = [
+            {
+                titulo: "Nivel 1: El Inicio",
+                instruccion: "¿Adivinaste la respuesta? son 3 dígitos",
+                respuesta: "006",
+                pista: "Pista: Respondías igual cuando te ponía encuestas en whats.",
+                logExito: "> LOG: Acceso nivel 1 concedido. Si recuerdas como iniciamos, amé cada letra que nos escribíamos...",
+                logError: "> ERROR: Respuesta incorrecta. Ya mataste una vida de nuestro amor u-u."
+            },
+            {
+                titulo: "Nivel 2: La Paciencia",
+                instruccion: "Escribe la fecha en que decidimos intentar esto (DD/MM/AAAA):",
+                respuesta: "15/12/2025",
+                pista: "Pista: Sucedió a mediados de diciembre.",
+                logExito: "> LOG: Nivel 2 superado. Procesando esfuerzo del usuario...",
+                logError: "> ERROR: Datos erróneos. La frustración del sistema aumenta."
+            },
+            {
+                titulo: "Nivel 3: El Sacrificio",
+                instruccion: "¿Qué es lo que más elijo proteger cuando me callo lo que siento?",
+                respuesta: "nosotros",
+                pista: "Pista: Empieza con 'N' y somos tú y yo.",
+                logExito: "> LOG: Nivel final desbloqueado. Preparando mensaje de honestidad.",
+                logError: "> ERROR: Fallo crítico. Parece que no hay interés en descifrar el sistema."
+            }
+        ];
+
+        function verificarRespuesta() {
+            const input = document.getElementById('respuesta');
+            const userRes = input.value.toLowerCase().trim();
+            const logBox = document.getElementById('log-container');
+            const pistaBox = document.getElementById('pista-box');
+            
+            if (userRes === pasos[pasoActual].respuesta.toLowerCase()) {
+                // EXITO
+                logBox.innerHTML += `<br><span style="color: #00ff41;">${pasos[pasoActual].logExito}</span>`;
+                pasoActual++;
+                pistaBox.style.display = 'none';
+                
+                if (pasoActual < pasos.length) {
+                    document.getElementById('titulo').innerText = pasos[pasoActual].titulo;
+                    document.getElementById('instruccion').innerText = pasos[pasoActual].instruccion;
+                    input.value = "";
+                } else {
+                    mostrarFinal();
+                }
+            } else {
+                // ERROR
+                erroresTotales++;
+                logBox.innerHTML += `<br><span style="color: #ff4d4d;">${pasos[pasoActual].logError} (Intentos fallidos: ${erroresTotales})</span>`;
+                pistaBox.innerText = pasos[pasoActual].pista;
+                pistaBox.style.display = 'block';
+                input.style.borderColor = "red";
+                setTimeout(() => input.style.borderColor = "#ddd", 500);
+            }
+            logBox.scrollTop = logBox.scrollHeight;
         }
-    } else {
-        // ERROR: Suma al contador y muestra pista
-        erroresTotales++;
-        logBox.innerHTML += `<br><span style="color: #ff4d4d;">${pasos[pasoActual].logError} (Intentos fallidos: ${erroresTotales})</span>`;
-        
-        // Mostrar la pista en la interfaz
-        instruccionTxt.innerHTML = `${pasos[pasoActual].instruccion}<br><br><small style="color: #ffcc00;">${pasos[pasoActual].pista}</small>`;
-        
-        // Efecto visual de error (opcional)
-        input.style.borderColor = "red";
-        setTimeout(() => input.style.borderColor = "#ddd", 500);
-    }
-    
-    // Auto-scroll del log para ver siempre el último mensaje
-    logBox.scrollTop = logBox.scrollHeight;
-}
 
-function mostrarFinal() {
-    // Tu función de cierre con el mensaje honesto
-    document.getElementById('game-container').innerHTML = `
-        <h2>Acceso Concedido</h2>
-        <p style="text-align: justify;">Tu persistencia (y tus ${erroresTotales} errores) dicen mucho de tu interés. Hoy elijo mostrarte mi lado amable porque es lo que quiero para nosotros, aunque por dentro el sistema esté lidiando con mucha molestia.</p>
-        <p><b>Gracias por no rendirte.</b></p>
-    `;
-}
+        function mostrarFinal() {
+            document.getElementById('game-container').innerHTML = `
+                <h2 style="color: #007bff;">Acceso Concedido</h2>
+                <p style="text-align: justify; line-height: 1.5;">Tu persistencia (y tus ${erroresTotales} errores) dicen mucho de tu interés. Hoy elijo mostrarte mi lado amable porque es lo que quiero para nosotros, aunque por dentro el sistema esté lidiando con mucha molestia.</p>
+                <p><b>Gracias por no rendirte.</b></p>
+            `;
+        }
+    </script>
+</body>
+</html>
