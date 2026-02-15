@@ -1,0 +1,75 @@
+let pasoActual = 0;
+let erroresTotales = 0;
+
+// Definición de niveles con validación estricta y pistas
+const pasos = [
+    {
+        titulo: "Nivel 1: El Inicio",
+        instruccion: "Adivinaste la respuesta? son 3 dígitos",
+        respuesta: "006", // Asegúrate de que coincida con tu respuesta
+        pista: "Pista: Respondías igual cuando te ponía encuestas en whats",
+        logExito: "> LOG: Acceso nivel 1 concedido. Si recuerdas como iniciamos, amé cada letra que nos escribiamos, como disfrutabas mis historias de los sueños que tuve contigo",
+        logError: "> ERROR: Respuesta incorrecta. Ya mataste una vida de nuestro amor u-u "
+    },
+    {
+        titulo: "Nivel 2: La Paciencia",
+        instruccion: "Escribe la fecha en que decidimos intentar esto (DD/MM/AAAA):",
+        respuesta: "15/12/2025",
+        pista: "Pista: Sucedió a mediados de diciembre.",
+        logExito: "> LOG: Nivel 2 superado. Procesando esfuerzo del usuario...",
+        logError: "> ERROR: Datos erróneos. La frustración del sistema aumenta."
+    },
+    {
+        titulo: "Nivel 3: El Sacrificio",
+        instruccion: "¿Qué es lo que más elijo proteger cuando me callo lo que siento?",
+        respuesta: "nosotros",
+        pista: "Pista: Empieza con 'N' y somos tú y yo.",
+        logExito: "> LOG: Nivel final desbloqueado. Preparando mensaje de honestidad.",
+        logError: "> ERROR: Fallo crítico. Parece que no hay interés en descifrar el sistema."
+    }
+];
+
+function verificarRespuesta() {
+    const input = document.getElementById('respuesta');
+    const userRes = input.value.toLowerCase().trim();
+    const logBox = document.getElementById('log-container');
+    const instruccionTxt = document.getElementById('instruccion');
+    
+    // VALIDACIÓN ESTRICTA
+    if (userRes === pasos[pasoActual].respuesta.toLowerCase()) {
+        // ACIERTO: Avanza de nivel
+        logBox.innerHTML += `<br><span style="color: #00ff41;">${pasos[pasoActual].logExito}</span>`;
+        pasoActual++;
+        
+        if (pasoActual < pasos.length) {
+            document.getElementById('titulo').innerText = pasos[pasoActual].titulo;
+            instruccionTxt.innerText = pasos[pasoActual].instruccion;
+            input.value = "";
+        } else {
+            mostrarFinal();
+        }
+    } else {
+        // ERROR: Suma al contador y muestra pista
+        erroresTotales++;
+        logBox.innerHTML += `<br><span style="color: #ff4d4d;">${pasos[pasoActual].logError} (Intentos fallidos: ${erroresTotales})</span>`;
+        
+        // Mostrar la pista en la interfaz
+        instruccionTxt.innerHTML = `${pasos[pasoActual].instruccion}<br><br><small style="color: #ffcc00;">${pasos[pasoActual].pista}</small>`;
+        
+        // Efecto visual de error (opcional)
+        input.style.borderColor = "red";
+        setTimeout(() => input.style.borderColor = "#ddd", 500);
+    }
+    
+    // Auto-scroll del log para ver siempre el último mensaje
+    logBox.scrollTop = logBox.scrollHeight;
+}
+
+function mostrarFinal() {
+    // Tu función de cierre con el mensaje honesto
+    document.getElementById('game-container').innerHTML = `
+        <h2>Acceso Concedido</h2>
+        <p style="text-align: justify;">Tu persistencia (y tus ${erroresTotales} errores) dicen mucho de tu interés. Hoy elijo mostrarte mi lado amable porque es lo que quiero para nosotros, aunque por dentro el sistema esté lidiando con mucha molestia.</p>
+        <p><b>Gracias por no rendirte.</b></p>
+    `;
+}
